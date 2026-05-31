@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hoàng Dũng & Quỳnh Linh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { overflow-x:hidden; }
+    
+    /* Màn hình mở thiệp */
+    #openCardOverlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background:#333; color:white; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; z-index:1000;
+      text-align:center;
+    }
+    #openCardOverlay h1 { font-size: 3em; margin-bottom:20px; font-family:'Great Vibes',cursive; }
+    #openBtn {
+      padding:15px 30px; font-size:18px; border:none; border-radius:30px;
+      background:#d86c88; color:white; cursor:pointer;
+    }
+    
+    /* Sau khi mở thiệp - SỬA LỖI Ở ĐÂY (thêm !important) */
+    .hidden { display:none !important; }
+    
+    /* Hero */
+    .hero {
+      height:100vh; background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), 
+        url('hero.jpg') no-repeat center/cover;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      text-align:center; color:white;
+    }
+    .hero h1 { font-size:4em; font-family:'Great Vibes',cursive; }
+    .hero h2 { font-size:1.5em; font-weight:300; }
+    
+    /* FAB menu */
+    .fab-menu {
+      position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:15px;
+      z-index:500;
+    }
+    .fab {
+      width:50px; height:50px; background:#d86c88; color:white; font-size:24px;
+      border-radius:50%; display:flex; justify-content:center; align-items:center;
+      cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      text-decoration:none;
+    }
+    
+    /* Các phần nội dung */
+    section { padding:60px 10%; }
+    section h2 {
+      font-size:2.5em; margin-bottom:20px;
+      font-family:'Great Vibes',cursive; color:#d86c88;
+      text-align:center;
+    }
+    
+    /* Countdown */
+    .countdown { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+    .countdown div { background:#d86c88; color:white; padding:20px;
+                     border-radius:10px; min-width:80px; text-align:center; }
+    .countdown span { font-size:2em; font-weight:bold; display:block; }
+    
+    /* Couple cards */
+    .couple { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
+    .card { background:white; padding:20px; border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1); width:260px; text-align:center; }
+    .card h3 { margin-bottom:10px; color:#d86c88; }
+    .card p { font-size:0.95em; line-height:1.5; }
+    
+    /* Story */
+    .story { max-width:800px; margin:auto; line-height:1.7; text-align:justify; }
+    
+    /* Location */
+    .location { background:#fff0f3; padding:20px; border-radius:10px;
+                max-width:600px; margin:auto; }
+    .location p { margin:8px 0; }
+    
+    /* Gallery */
+    .gallery {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:15px;
+    }
+    .gallery img {
+      width:100%; height:150px; object-fit:cover; border-radius:10px;
+      cursor:pointer;
+    }
+    
+    /* Lightbox overlay */
+    #lightboxOverlay {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.8); display:none; justify-content:center;
+      align-items:center; z-index:1000;
+    }
+    #lightboxOverlay img {
+      max-width:90%; max-height:80%; border-radius:10px;
+    }
+    
+    /* RSVP */
+    .rsvp { max-width:600px; margin:auto; }
+    .rsvp label { display:block; margin:15px 0 5px; }
+    .rsvp input[type=text],
+    .rsvp input[type=tel],
+    .rsvp select { width:100%; padding:10px; border:1px solid #ccc;
+                   border-radius:5px; }
+    .rsvp button {
+      margin-top:15px; padding:12px 25px; background:#d86c88; color:white;
+      border:none; border-radius:25px; cursor:pointer;
+    }
+    
+    /* Hộp quà modal */
+    .modal {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); display:none; justify-content:center;
+      align-items:center; z-index:1000;
+    }
+    .modal-content {
+      background:white; padding:20px; border-radius:10px; text-align:center;
+      max-width:90%; max-height:90%;
+    }
+    .modal-content img { width:200px; margin:15px 0; }
+    .modal-content button {
+      padding:10px 20px; background:#d86c88; color:white; border:none;
+      border-radius:20px; cursor:pointer;
+    }
+    
+    /* Hiệu ứng hộp quà */
+    @keyframes shake {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(20deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-20deg); }
+      100% { transform: rotate(0deg); }
+    }
+    #giftFab.shake { animation: shake 0.6s; }
+    #giftFab.opened { background:#f4d03f; transform: scale(1.2); }
+    
+    /* Footer */
+    .footer {
+      background:#d86c88; color:white; text-align:center; padding:40px 10%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="openCardOverlay">
+  <h1>Minh & Liên</h1>
+  <p>Chúng tôi trân trọng kính mời bạn đến tham dự ngày vui</p>
+  <button id="openBtn">MỞ THIỆP</button>
+</div>
+
+<div id="mainContent" class="hidden">
+
+  <section class="hero">
+    <h1>Minh ❤️ Liên</h1>
+    <h2>We Are Getting Married</h2>
+    <p>20 • 12 • 2026</p>
+  </section>
+
+  <section>
+    <h2>Đếm ngược đến ngày cưới</h2>
+    <div class="countdown">
+      <div><span id="days">0</span>Ngày</div>
+      <div><span id="hours">0</span>Giờ</div>
+      <div><span id="minutes">0</span>Phút</div>
+      <div><span id="seconds">0</span>Giây</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cô dâu & Chú rể</h2>
+    <div class="couple">
+      <div class="card">
+        <h3>🤵 Minh</h3>
+        <p>Là người đàn ông chân thành, yêu thương và rất trách nhiệm trong mọi việc. Luôn đặt gia đình và Liên lên hàng đầu.</p>
+      </div>
+      <div class="card">
+        <h3>👰 Liên</h3>
+        <p>Là cô gái dịu dàng, hiểu chuyện và ấm áp. Liên luôn là nguồn động viên lớn nhất giúp Minh hoàn thiện bản thân.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Câu chuyện tình yêu</h2>
+    <div class="story">
+      <p>Chúng tôi gặp nhau lần đầu trong một buổi tiệc bạn chung, từ ánh nhìn đầu tiên đã có cảm tình đặc biệt. Sau đó, hai đứa thường xuyên hẹn hò, cùng nhau trải qua những niềm vui, thử thách trong cuộc sống. Mỗi ngày bên nhau đều cảm thấy trân trọng và hạnh phúc.</p>
+      <p>Giờ đây, chúng tôi quyết định viết tiếp câu chuyện ấy bằng chương mới lãng mạn nhất – hôn nhân. Hẹn gặp bạn trong ngày vui của chúng tôi!</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Thông tin lễ cưới</h2>
+    <div class="location">
+      <p><strong>🏠 Nhà trai:</strong> Thôn Bái Ân 2</p>
+      <p><strong>🏠 Nhà gái:</strong> Thôn Tường Vân</p>
+      <p><strong>🗓️ Ngày cưới:</strong> 20/12/2026 (Thứ Tư, 10:00)</p>
+      <p><strong>📍 Địa điểm:</strong> Trung tâm Hội nghị ABC</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Trung+tam+Hoi+nghi+ABC" target="_blank" class="fab">🗺️</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Album ảnh</h2>
+    <div class="gallery">
+      <img src="photo1.jpg" alt="Ảnh cưới 1">
+      <img src="photo2.jpg" alt="Ảnh cưới 2">
+      <img src="photo3.jpg" alt="Ảnh cưới 3">
+      <img src="photo4.jpg" alt="Ảnh cưới 4">
+    </div>
+    <p style="text-align:center; margin-top:15px;">
+      *Nhấp vào ảnh để xem lớn.*
+    </p>
+  </section>
+
+  <section id="rsvp">
+    <h2>Xác nhận tham dự</h2>
+    <form class="rsvp" id="rsvpForm">
+      <label for="name">Họ và tên:</label>
+      <input type="text" id="name" placeholder="Họ và tên đầy đủ" required>
+      <label for="phone">Số điện thoại:</label>
+      <input type="tel" id="phone" placeholder="Ví dụ: 0912..." required>
+      <label for="attend">Bạn có tham dự không?</label>
+      <select id="attend">
+        <option value="Có">Có, tôi sẽ tham dự</option>
+        <option value="Không">Tôi không thể tham dự</option>
+      </select>
+      <label for="guests">Số khách đi cùng:</label>
+      <input type="text" id="guests" placeholder="Nếu có, ghi số khách" value="0">
+      <button type="submit">Gửi xác nhận</button>
+    </form>
+    <p id="thankYou" style="text-align:center; color:#d86c88; display:none; margin-top:10px;">
+      ❤️ Cảm ơn bạn đã xác nhận! Chúng tôi rất mong được gặp bạn.
+    </p>
+  </section>
+
+  <section class="footer">
+    <h2 style="font-family:Great Vibes; font-size:2.5em;">
+      Minh ❤️ Liên
+    </h2>
+    <p>Cảm ơn bạn đã dành thời gian tham dự ngày trọng đại của chúng tôi.</p>
+  </section>
+</div>
+
+<div class="fab-menu">
+  <div class="fab" id="btnMusic">🔊</div>
+  <div class="fab" id="giftFab">🎁</div>
+  <a href="#rsvp" class="fab">💬</a>
+</div>
+
+<div id="lightboxOverlay"><img id="lightboxImg" src=""></div>
+
+<div id="giftModal" class="modal">
+  <div class="modal-content">
+    <h3>🎁 Mừng cưới</h3>
+    <img src="qr-placeholder.png" alt="QR Code ngân hàng">
+    <p><strong>Ngân hàng:</strong> MB Bank<br><strong>STK:</strong> 123456789</p>
+    <button id="copyBtn">Sao chép STK</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+  // Mở thiệp
+  document.getElementById('openBtn').addEventListener('click', () => {
+    document.getElementById('openCardOverlay').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+  });
+
+  // Đếm ngược
+  const weddingDate = new Date("December 20, 2026 10:00:00").getTime();
+  const c_days = document.getElementById('days'),
+        c_hours = document.getElementById('hours'),
+        c_minutes = document.getElementById('minutes'),
+        c_seconds = document.getElementById('seconds');
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = weddingDate - now;
+    if (diff > 0) {
+      c_days.innerText = Math.floor(diff / (1000*60*60*24));
+      c_hours.innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      c_minutes.innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+      c_seconds.innerText = Math.floor((diff % (1000*60)) / 1000);
+    }
+  }, 1000);
+
+  // Lightbox ảnh
+  const galleryImgs = document.querySelectorAll('.gallery img');
+  const lightbox = document.getElementById('lightboxOverlay');
+  const lightboxImg = document.getElementById('lightboxImg');
+  galleryImgs.forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
+    });
+  });
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
+
+  // Nhạc nền
+  const audio = new Audio('your-music.mp3'); // Thay link file âm thanh
+  audio.loop = true;
+  let musicOn = false;
+  document.getElementById('btnMusic').addEventListener('click', () => {
+    if (!musicOn) { audio.play(); musicOn = true; }
+    else { audio.pause(); musicOn = false; }
+  });
+
+  // Hộp quà mừng
+  const giftFab = document.getElementById('giftFab');
+  const giftModal = document.getElementById('giftModal');
+  giftFab.addEventListener('click', () => {
+    // Rung lắc
+    giftFab.classList.add('shake');
+    setTimeout(() => {
+      giftFab.classList.remove('shake');
+      giftFab.classList.add('opened');
+      // Hiện modal
+      giftModal.style.display = 'flex';
+      // Confetti
+      confetti({ particleCount: 100, spread: 70 });
+    }, 600);
+  });
+  
+  // Đóng modal khi click ra ngoài
+  giftModal.addEventListener('click', (e) => {
+    if (e.target === giftModal) {
+      giftModal.style.display = 'none';
+      giftFab.classList.remove('opened');
+    }
+  });
+  
+  // Sao chép STK
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const stk = '123456789'; 
+    navigator.clipboard.writeText(stk).then(() => {
+      alert('Đã sao chép STK: ' + stk);
+    });
+  });
+
+  // Xử lý form RSVP
+  const form = document.getElementById('rsvpForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      name: form.name.value,
+      phone: form.phone.value,
+      attend: form.attend.value,
+      guests: form.guests.value
+    };
+    // Lưu vào localStorage (có thể thay thành POST đến server)
+    let list = JSON.parse(localStorage.getItem('rsvps')||'[]');
+    list.push(data);
+    localStorage.setItem('rsvps', JSON.stringify(list));
+    // Hiển thị cảm ơn
+    form.reset();
+    document.getElementById('thankYou').style.display = 'block';
+  });
+</script>
+</body>
+</html>
