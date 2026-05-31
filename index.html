@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minh & Liên Wedding</title>
+  <title>Hoàng Dũng & Quỳnh Linh</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
     body { overflow-x:hidden; }
+    
     /* Màn hình mở thiệp */
     #openCardOverlay {
       position: fixed; top:0; left:0; width:100%; height:100%;
@@ -20,8 +21,10 @@
       padding:15px 30px; font-size:18px; border:none; border-radius:30px;
       background:#d86c88; color:white; cursor:pointer;
     }
-    /* Sau khi mở thiệp */
-    .hidden { display:none; }
+    
+    /* Sau khi mở thiệp - SỬA LỖI Ở ĐÂY (thêm !important) */
+    .hidden { display:none !important; }
+    
     /* Hero */
     .hero {
       height:100vh; background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), 
@@ -31,6 +34,7 @@
     }
     .hero h1 { font-size:4em; font-family:'Great Vibes',cursive; }
     .hero h2 { font-size:1.5em; font-weight:300; }
+    
     /* FAB menu */
     .fab-menu {
       position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:15px;
@@ -42,6 +46,7 @@
       cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.3);
       text-decoration:none;
     }
+    
     /* Các phần nội dung */
     section { padding:60px 10%; }
     section h2 {
@@ -49,23 +54,28 @@
       font-family:'Great Vibes',cursive; color:#d86c88;
       text-align:center;
     }
+    
     /* Countdown */
     .countdown { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
     .countdown div { background:#d86c88; color:white; padding:20px;
                      border-radius:10px; min-width:80px; text-align:center; }
     .countdown span { font-size:2em; font-weight:bold; display:block; }
+    
     /* Couple cards */
     .couple { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
     .card { background:white; padding:20px; border-radius:10px;
             box-shadow:0 5px 15px rgba(0,0,0,0.1); width:260px; text-align:center; }
     .card h3 { margin-bottom:10px; color:#d86c88; }
     .card p { font-size:0.95em; line-height:1.5; }
+    
     /* Story */
     .story { max-width:800px; margin:auto; line-height:1.7; text-align:justify; }
+    
     /* Location */
     .location { background:#fff0f3; padding:20px; border-radius:10px;
                 max-width:600px; margin:auto; }
     .location p { margin:8px 0; }
+    
     /* Gallery */
     .gallery {
       display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -75,6 +85,7 @@
       width:100%; height:150px; object-fit:cover; border-radius:10px;
       cursor:pointer;
     }
+    
     /* Lightbox overlay */
     #lightboxOverlay {
       position:fixed; top:0; left:0; width:100%; height:100%;
@@ -84,6 +95,7 @@
     #lightboxOverlay img {
       max-width:90%; max-height:80%; border-radius:10px;
     }
+    
     /* RSVP */
     .rsvp { max-width:600px; margin:auto; }
     .rsvp label { display:block; margin:15px 0 5px; }
@@ -95,6 +107,7 @@
       margin-top:15px; padding:12px 25px; background:#d86c88; color:white;
       border:none; border-radius:25px; cursor:pointer;
     }
+    
     /* Hộp quà modal */
     .modal {
       position:fixed; top:0; left:0; width:100%; height:100%;
@@ -110,6 +123,7 @@
       padding:10px 20px; background:#d86c88; color:white; border:none;
       border-radius:20px; cursor:pointer;
     }
+    
     /* Hiệu ứng hộp quà */
     @keyframes shake {
       0% { transform: rotate(0deg); }
@@ -120,6 +134,7 @@
     }
     #giftFab.shake { animation: shake 0.6s; }
     #giftFab.opened { background:#f4d03f; transform: scale(1.2); }
+    
     /* Footer */
     .footer {
       background:#d86c88; color:white; text-align:center; padding:40px 10%;
@@ -128,24 +143,20 @@
 </head>
 <body>
 
-<!-- Màn hình mở thiệp -->
 <div id="openCardOverlay">
-  <h1>Minh &amp; Liên</h1>
+  <h1>Minh & Liên</h1>
   <p>Chúng tôi trân trọng kính mời bạn đến tham dự ngày vui</p>
   <button id="openBtn">MỞ THIỆP</button>
 </div>
 
-<!-- Nội dung chính sau khi mở -->
 <div id="mainContent" class="hidden">
 
-  <!-- Hero full-screen -->
   <section class="hero">
     <h1>Minh ❤️ Liên</h1>
     <h2>We Are Getting Married</h2>
     <p>20 • 12 • 2026</p>
   </section>
 
-  <!-- Đếm ngược -->
   <section>
     <h2>Đếm ngược đến ngày cưới</h2>
     <div class="countdown">
@@ -156,9 +167,8 @@
     </div>
   </section>
 
-  <!-- Giới thiệu cô dâu, chú rể -->
   <section>
-    <h2>Cô dâu &amp; Chú rể</h2>
+    <h2>Cô dâu & Chú rể</h2>
     <div class="couple">
       <div class="card">
         <h3>🤵 Minh</h3>
@@ -171,7 +181,6 @@
     </div>
   </section>
 
-  <!-- Câu chuyện tình yêu -->
   <section>
     <h2>Câu chuyện tình yêu</h2>
     <div class="story">
@@ -180,7 +189,6 @@
     </div>
   </section>
 
-  <!-- Thông tin lễ cưới -->
   <section>
     <h2>Thông tin lễ cưới</h2>
     <div class="location">
@@ -192,11 +200,9 @@
     </div>
   </section>
 
-  <!-- Album ảnh -->
   <section>
     <h2>Album ảnh</h2>
     <div class="gallery">
-      <!-- Thay link ảnh thực tế -->
       <img src="photo1.jpg" alt="Ảnh cưới 1">
       <img src="photo2.jpg" alt="Ảnh cưới 2">
       <img src="photo3.jpg" alt="Ảnh cưới 3">
@@ -207,7 +213,6 @@
     </p>
   </section>
 
-  <!-- Form RSVP -->
   <section id="rsvp">
     <h2>Xác nhận tham dự</h2>
     <form class="rsvp" id="rsvpForm">
@@ -229,7 +234,6 @@
     </p>
   </section>
 
-  <!-- Footer cảm ơn -->
   <section class="footer">
     <h2 style="font-family:Great Vibes; font-size:2.5em;">
       Minh ❤️ Liên
@@ -238,30 +242,23 @@
   </section>
 </div>
 
-<!-- FAB Menu (nổi góc phải) -->
 <div class="fab-menu">
   <div class="fab" id="btnMusic">🔊</div>
-  <!-- Icon 🎁 sẽ là phần tử được click để mở hộp quà -->
   <div class="fab" id="giftFab">🎁</div>
-  <!-- Biểu tượng chat: cuộn đến RSVP form -->
   <a href="#rsvp" class="fab">💬</a>
 </div>
 
-<!-- Lightbox cho ảnh -->
 <div id="lightboxOverlay"><img id="lightboxImg" src=""></div>
 
-<!-- Modal Quà mừng -->
 <div id="giftModal" class="modal">
   <div class="modal-content">
     <h3>🎁 Mừng cưới</h3>
-    <!-- Thay image QR code thật tại src -->
     <img src="qr-placeholder.png" alt="QR Code ngân hàng">
     <p><strong>Ngân hàng:</strong> MB Bank<br><strong>STK:</strong> 123456789</p>
     <button id="copyBtn">Sao chép STK</button>
   </div>
 </div>
 
-<!-- Thư viện confetti (qua CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
   // Mở thiệp
@@ -279,10 +276,12 @@
   setInterval(() => {
     const now = new Date().getTime();
     const diff = weddingDate - now;
-    c_days.innerText = Math.floor(diff / (1000*60*60*24));
-    c_hours.innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    c_minutes.innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-    c_seconds.innerText = Math.floor((diff % (1000*60)) / 1000);
+    if (diff > 0) {
+      c_days.innerText = Math.floor(diff / (1000*60*60*24));
+      c_hours.innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      c_minutes.innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+      c_seconds.innerText = Math.floor((diff % (1000*60)) / 1000);
+    }
   }, 1000);
 
   // Lightbox ảnh
@@ -323,6 +322,7 @@
       confetti({ particleCount: 100, spread: 70 });
     }, 600);
   });
+  
   // Đóng modal khi click ra ngoài
   giftModal.addEventListener('click', (e) => {
     if (e.target === giftModal) {
@@ -330,6 +330,7 @@
       giftFab.classList.remove('opened');
     }
   });
+  
   // Sao chép STK
   document.getElementById('copyBtn').addEventListener('click', () => {
     const stk = '123456789'; 
@@ -357,3 +358,5 @@
     document.getElementById('thankYou').style.display = 'block';
   });
 </script>
+</body>
+</html>
